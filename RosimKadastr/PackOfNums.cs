@@ -26,7 +26,7 @@ namespace RosimKadastr
             return $"Всего кадастровых номеров в списке: {_userInput.Count}.\r\nИз них уникальных: {uniqueItems.Count}";
         }
 
-        public void CreateCSV()
+        public void CreateCSV(int numbersPerFile)
         {
             
         }
@@ -34,6 +34,11 @@ namespace RosimKadastr
         public void SetNumbersPerFile(int num)
         {
             _numbersPerFile = num;
+        }
+
+        public int GetNumbersPerFiles()
+        {
+            return _numbersPerFile;
         }
 
         public Dictionary<string, List<int>> FindDuplicates()

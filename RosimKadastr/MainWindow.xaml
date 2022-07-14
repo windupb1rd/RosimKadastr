@@ -6,21 +6,15 @@
         xmlns:local="clr-namespace:RosimKadastr"
         mc:Ignorable="d"
         Title="Rosim" Height="650" Width="614" WindowStyle="ThreeDBorderWindow">
-    <Grid x:Name="MainGrid" Margin="0,0,10,-6">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="465*"/>
-            <RowDefinition Height="169*"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="393*"/>
-            <ColumnDefinition Width="211*"/>
-        </Grid.ColumnDefinitions>
-        <TextBox x:Name="InputField" Grid.Row="0" Grid.Column="0" Margin="10,10,10,10" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" AcceptsReturn="True" ToolTip="" BorderThickness="5,5,5,5" />
-        <TextBox x:Name="NumberOfFiles"  HorizontalAlignment="Center" Height="31" Margin="0,338,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="66" Grid.Column="1"/>
-        <Label Content="Номеров в каждом файле &#xD;&#xA;(по умолчанию 100): " HorizontalAlignment="Center" VerticalAlignment="Top" Width="158" Height="47" Grid.Column="1" Margin="0,286,0,0"/>
-        <Button x:Name="ProcessBTN" Content="Обработать" HorizontalAlignment="Center" Height="31" Margin="0,26,0,0" VerticalAlignment="Top" Width="114" Grid.Column="1" Click="ProcessBTN_Click"/>
-        <Button Grid.Column="1" Content="Скачать файлы" HorizontalAlignment="Center" Margin="0,380,0,0" VerticalAlignment="Top" Height="31" Width="114"/>
-        <TextBlock x:Name="Info" Grid.Column="1" HorizontalAlignment="Center" Margin="0,76,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="191" Height="67"/>
-        <Button x:Name="ShowDuplicatesBTN" Grid.Column="1" Content="Показать дубликаты" HorizontalAlignment="Center" Height="32" Margin="0,148,0,0" VerticalAlignment="Top" Width="141" Click="ShowDuplicatesBTN_Click"/>
+    <Grid x:Name="MainGrid" Margin="0,0,0,3">
+        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="429" Margin="10,40,0,0" VerticalAlignment="Top" Width="578"/>
+        <TextBox x:Name="InputField" Margin="21,55,212,180" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" AcceptsReturn="True" ToolTip="" BorderThickness="5,5,5,5" />
+        <TextBox x:Name="NumberOfFiles"  HorizontalAlignment="Left" Height="31" Margin="466,254,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="66"/>
+        <Label Content="Номеров в каждом файле &#xA;(по умолчанию 100): " HorizontalAlignment="Left" VerticalAlignment="Top" Width="158" Height="46" Margin="420,208,0,0"/>
+        <Button x:Name="ProcessBTN" Content="Обработать" HorizontalAlignment="Left" Height="31" Margin="442,63,0,0" VerticalAlignment="Top" Width="114" Click="ProcessBTN_Click"/>
+        <Button x:Name="DowloadBTN" Content="Скачать файлы" HorizontalAlignment="Left" Margin="442,0,0,0" VerticalAlignment="Center" Height="31" Width="114" Click="Button_Click"/>
+        <TextBlock x:Name="Info" HorizontalAlignment="Left" Margin="410,99,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="178" Height="58"/>
+        <Button x:Name="ShowDuplicatesBTN" Content="Показать дубликаты" HorizontalAlignment="Left" Height="32" Margin="429,162,0,0" VerticalAlignment="Top" Width="141" Click="ShowDuplicatesBTN_Click"/>
+        <Label Content="Создать CSV-файлы с заданным количеством номеров в каждом" HorizontalAlignment="Left" Height="40" Margin="57,10,0,0" VerticalAlignment="Top" Width="499" FontSize="16"/>
     </Grid>
 </Window>

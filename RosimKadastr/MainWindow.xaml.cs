@@ -30,12 +30,9 @@ namespace RosimKadastr
 
         private void ProcessBTN_Click(object sender, RoutedEventArgs e)
         {
-            
             if (InputField.Text != null)
             {
                 _instance = new PackOfNums(InputField.Text);
-                //if (NumberOfFiles.Text != null)
-                //    file.SetNumbersPerFile(int.Parse(NumberOfFiles.Text));
                 Info.Text = _instance.ShowInfo();
             }
         }
@@ -44,6 +41,21 @@ namespace RosimKadastr
         {
             _instance.GenerateTxtWithDuplicates();
             System.Diagnostics.Process.Start("notepad", "duplicates.txt");
+        }
+
+        private void DownloadBTN_Click(object sender, RoutedEventArgs e)
+        {
+            int numberOfFiles;
+            if (NumberOfFiles.Text != null)
+            {
+                if (int.TryParse(NumberOfFiles.Text, out numberOfFiles))
+                    _instance.SetNumbersPerFile(numberOfFiles);
+            }
+
+            _instance.CreateCSV(_instance.GetNumbersPerFiles());
+                
+                
+                
         }
     }
 }
