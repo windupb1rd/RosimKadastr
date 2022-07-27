@@ -21,7 +21,7 @@ namespace RosimKadastr
     /// </summary>
     public partial class MainWindow : Window
     {
-        private PackOfNums _instance;
+        private PackOfNums _instance = null;
         public MainWindow()
         {
             InitializeComponent();
@@ -32,7 +32,8 @@ namespace RosimKadastr
         {
             if (InputField.Text != null)
             {
-                _instance = new PackOfNums(InputField.Text);
+                if (_instance == null)
+                    _instance = new PackOfNums(InputField.Text);
                 Info.Text = _instance.ShowInfo();
             }
         }
@@ -53,9 +54,12 @@ namespace RosimKadastr
             }
 
             _instance.CreateCSV(_instance.GetNumbersPerFiles());
-                
-                
-                
+        }
+
+        private void OpenFileBTN_Click(object sender, RoutedEventArgs e)
+        {
+            if (_instance == null)
+                _instance = new PackOfNums();
         }
     }
 }

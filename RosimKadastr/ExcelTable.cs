@@ -9,6 +9,12 @@ namespace RosimKadastr
 {
     internal class ExcelTable
     {
+        private string pathToExcelDocument;
+        private readonly Excel.Application app = new Excel.Application();
 
+        public void OpenFile()
+        {
+
+        }
     }
 }
