@@ -12,6 +12,7 @@ namespace RosimKadastr
     {
         private readonly List<string> _userInput;
         private int _numbersPerFile = 100;
+        private List<string> uniqueItems;
 
         public PackOfNums(string userInput)
         {
@@ -21,14 +22,55 @@ namespace RosimKadastr
 
         public string ShowInfo()
         {
-            HashSet<string> uniqueItems = _userInput.ToHashSet<string>();
+            uniqueItems = _userInput.ToHashSet<string>().ToList<string>();
 
             return $"Всего кадастровых номеров в списке: {_userInput.Count}.\r\nИз них уникальных: {uniqueItems.Count}";
         }
 
         public void CreateCSV(int numbersPerFile)
         {
-            
+            if (!System.IO.Directory.Exists("output"))
+                System.IO.Directory.CreateDirectory("output");
+            string folderName = DateTime.Now.ToString().Replace('.', '-').Replace(' ', '-').Replace(':', '-');
+            System.IO.Directory.CreateDirectory($"output\\{folderName}");
+
+            int uniqueItemsCount = uniqueItems.Count;
+            int outputFilesQuantity;
+            if (numbersPerFile > uniqueItemsCount)
+            {
+                outputFilesQuantity = 1;
+                numbersPerFile = uniqueItemsCount;
+            } 
+            else
+            {
+                int temp = uniqueItemsCount % numbersPerFile;
+                if (temp != 0)
+                    outputFilesQuantity = uniqueItemsCount / numbersPerFile + 1;
+                else
+                    outputFilesQuantity = uniqueItemsCount / numbersPerFile;
+            }
+
+            int startPosition = 0;
+            int endPosition = numbersPerFile;
+            for (int i = 0; i < outputFilesQuantity; i++)
+            {
+                var f = System.IO.File.Create($"output\\{folderName}\\out_{i + 1}.csv");
+                using (StreamWriter sw = new StreamWriter(f))
+                    {
+                        for (int j = startPosition; j < endPosition; j++)
+                        {
+                            sw.WriteLine(uniqueItems[j] + ',');
+                        }
+                    }
+
+                startPosition += numbersPerFile;
+                if (endPosition + numbersPerFile <= uniqueItemsCount)
+                    endPosition += numbersPerFile;
+                else
+                    endPosition = startPosition + (uniqueItemsCount - endPosition);
+            }
+
+            System.Diagnostics.Process.Start("explorer", $"output\\{folderName}");
         }
 
         public void SetNumbersPerFile(int num)

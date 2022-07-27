@@ -12,7 +12,7 @@
         <TextBox x:Name="NumberOfFiles"  HorizontalAlignment="Left" Height="31" Margin="466,254,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="66"/>
         <Label Content="Номеров в каждом файле &#xA;(по умолчанию 100): " HorizontalAlignment="Left" VerticalAlignment="Top" Width="158" Height="46" Margin="420,208,0,0"/>
         <Button x:Name="ProcessBTN" Content="Обработать" HorizontalAlignment="Left" Height="31" Margin="442,63,0,0" VerticalAlignment="Top" Width="114" Click="ProcessBTN_Click"/>
-        <Button x:Name="DowloadBTN" Content="Скачать файлы" HorizontalAlignment="Left" Margin="442,0,0,0" VerticalAlignment="Center" Height="31" Width="114" Click="Button_Click"/>
+        <Button x:Name="DownloadBTN" Content="Скачать файлы" HorizontalAlignment="Left" Margin="442,0,0,0" VerticalAlignment="Center" Height="31" Width="114" Click="DownloadBTN_Click"/>
         <TextBlock x:Name="Info" HorizontalAlignment="Left" Margin="410,99,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="178" Height="58"/>
         <Button x:Name="ShowDuplicatesBTN" Content="Показать дубликаты" HorizontalAlignment="Left" Height="32" Margin="429,162,0,0" VerticalAlignment="Top" Width="141" Click="ShowDuplicatesBTN_Click"/>
         <Label Content="Создать CSV-файлы с заданным количеством номеров в каждом" HorizontalAlignment="Left" Height="40" Margin="57,10,0,0" VerticalAlignment="Top" Width="499" FontSize="16"/>
