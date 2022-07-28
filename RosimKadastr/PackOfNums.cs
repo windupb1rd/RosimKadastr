@@ -10,11 +10,16 @@ namespace RosimKadastr
 {
     internal class PackOfNums
     {
-        private readonly List<string> _userInput;
+        private List<string> _userInput;
         private int _numbersPerFile = 100;
         private List<string> uniqueItems;
 
         public PackOfNums(string userInput)
+        {
+            setUserInput(userInput);
+        }
+
+        public void setUserInput(string userInput)
         {
             _userInput = userInput.Split("\r\n").ToList<string>();
             _userInput.RemoveAll(x => x == "");

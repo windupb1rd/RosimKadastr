@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.IO;
+using OfficeOpenXml;
+using System.Text.RegularExpressions;
 
 namespace RosimKadastr
 {
@@ -21,7 +23,7 @@ namespace RosimKadastr
     /// </summary>
     public partial class MainWindow : Window
     {
-        private PackOfNums _instance = null;
+        private PackOfNums? _instance = null;
         public MainWindow()
         {
             InitializeComponent();
@@ -34,6 +36,9 @@ namespace RosimKadastr
             {
                 if (_instance == null)
                     _instance = new PackOfNums(InputField.Text);
+                else
+                    _instance.setUserInput(InputField.Text);
+
                 Info.Text = _instance.ShowInfo();
             }
         }
@@ -58,8 +63,44 @@ namespace RosimKadastr
 
         private void OpenFileBTN_Click(object sender, RoutedEventArgs e)
         {
-            if (_instance == null)
-                _instance = new PackOfNums();
+            if (!String.IsNullOrEmpty(ColumnLetter.Text))
+            {
+                Columns col;
+                Enum.TryParse(ColumnLetter.Text.ToUpper(), out col);
+
+                Microsoft.Win32.OpenFileDialog openFileDlg = new Microsoft.Win32.OpenFileDialog();
+                Nullable<bool> dialogResult = openFileDlg.ShowDialog();
+
+                if (dialogResult == true)
+                {
+                    string path = openFileDlg.FileName;
+
+                    FileInfo fileInfo = new FileInfo(openFileDlg.FileName);
+                    ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                    using (ExcelPackage excelPackage = new ExcelPackage(fileInfo))
+                    {
+                        ExcelWorksheet sheet = excelPackage.Workbook.Worksheets[0];
+
+                        var numberObjectsFromExcel = sheet.Columns[(int)col].Range.ToList();
+                        List<string> theNumbers = new List<string>();
+                        var textBoxOutput = new StringBuilder();
+                        foreach (var item in numberObjectsFromExcel)
+                        {
+                            string number = item.Value?.ToString();
+                            if (number != null && Regex.IsMatch(number, @"\d+:\d+:\d+:\d+"))
+                                {
+                                    theNumbers.Add(number);
+                                    //textBoxOutput.AppendLine(item.Value?.ToString());
+                                }
+                        }
+                        InputField.Text = String.Join("\r\n", theNumbers);
+                    }
+                }
+            }
+            else
+            {
+                // обработать попытку открыть файл с пустым значением колонки
+            }
         }
     }
 }
