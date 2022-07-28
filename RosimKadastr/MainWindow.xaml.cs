@@ -40,8 +40,8 @@ namespace RosimKadastr
 
                 if (dialogResult == true)
                 {
-                    var excelDoc = new ExcelDoc(openFileDlg.FileName, column);
-                    InputField.Text = excelDoc.GetExcelColumn();
+                    var excelDoc = new ExcelDocColumn(openFileDlg.FileName, column);
+                    InputField.Text = excelDoc.GetExcelColumnData();
                 }
             }
             else

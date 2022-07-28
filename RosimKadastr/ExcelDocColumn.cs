@@ -15,17 +15,19 @@ namespace RosimKadastr
         B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z
     }
 
-    internal class ExcelDoc
+    internal class ExcelDocColumn
     {
         private readonly string _pathToFile;
         private readonly Columns _column;
+        private Dictionary<string, string> theNumbers = new Dictionary<string, string>();
+        private Dictionary<string, string> doubles = new Dictionary<string, string>();
 
-        public ExcelDoc(string path, Columns col)
+        public ExcelDocColumn(string path, Columns col)
         {
             _pathToFile = path;
             _column = col;
         }
-        public string GetExcelColumn()
+        public string GetExcelColumnData()
         {
             FileInfo fileInfo = new FileInfo(_pathToFile);
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
@@ -34,18 +36,29 @@ namespace RosimKadastr
                 ExcelWorksheet sheet = excelPackage.Workbook.Worksheets[0];
 
                 var numberObjectsFromExcel = sheet.Columns[(int)_column].Range.ToList();
-                List<string> theNumbers = new List<string>();
-                var textBoxOutput = new StringBuilder();
+                
                 foreach (var item in numberObjectsFromExcel)
                 {
                     string number = item.Value?.ToString();
+                    string address = item.Address?.ToString();
                     if (number != null && Regex.IsMatch(number, @"\d+:\d+:\d+:\d+"))
                     {
-                        theNumbers.Add(number);
+                        theNumbers[address] = number;
                     }
                 }
-                return String.Join("\r\n", theNumbers);
+                GetDuplicatesAdresses();
+                return String.Join("\r\n", theNumbers.Values);
             }
+        }
+
+        public void GetDuplicatesAdresses()
+        {
+            //var distinctNumbers = theNumbers.Values.Distinct().ToList();
+            var doubles = theNumbers.GroupBy(x => x.Value.Count() > 1);
+        }
+        public void GetNewExcelFileWithoutDuplicates()
+        {
+
         }
     }
 }
