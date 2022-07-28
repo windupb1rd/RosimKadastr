@@ -52,11 +52,13 @@ namespace RosimKadastr
         private void DownloadBTN_Click(object sender, RoutedEventArgs e)
         {
             int numberOfFiles;
-            if (NumberOfFiles.Text != null)
+            if (!String.IsNullOrEmpty(NumberOfFiles.Text))
             {
                 if (int.TryParse(NumberOfFiles.Text, out numberOfFiles))
                     _instance.SetNumbersPerFile(numberOfFiles);
             }
+            else
+                _instance.SetNumbersPerFile(100);
 
             _instance.CreateCSV(_instance.GetNumbersPerFiles());
         }

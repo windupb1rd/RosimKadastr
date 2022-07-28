@@ -11,7 +11,7 @@ namespace RosimKadastr
     internal class PackOfNums
     {
         private List<string> _userInput;
-        private int _numbersPerFile = 100;
+        private int _numbersPerFile;
         private List<string> uniqueItems;
 
         public PackOfNums(string userInput)
