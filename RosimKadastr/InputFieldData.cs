@@ -8,13 +8,13 @@ using System.Windows;
 
 namespace RosimKadastr
 {
-    internal class PackOfNums
+    internal class InputFieldData
     {
         private List<string> _userInput;
         private int _numbersPerFile;
-        private List<string> uniqueItems;
+        private List<string> _uniqueItems;
 
-        public PackOfNums(string userInput)
+        public InputFieldData(string userInput)
         {
             setUserInput(userInput);
         }
@@ -27,9 +27,9 @@ namespace RosimKadastr
 
         public string ShowInfo()
         {
-            uniqueItems = _userInput.ToHashSet<string>().ToList<string>();
+            _uniqueItems = _userInput.ToHashSet<string>().ToList<string>();
 
-            return $"Всего кадастровых номеров в списке: {_userInput.Count}.\r\nИз них уникальных: {uniqueItems.Count}";
+            return $"Всего кадастровых номеров в списке: {_userInput.Count}.\r\nИз них уникальных: {_uniqueItems.Count}";
         }
 
         public void CreateCSV(int numbersPerFile)
@@ -39,7 +39,7 @@ namespace RosimKadastr
             string folderName = DateTime.Now.ToString().Replace('.', '-').Replace(' ', '-').Replace(':', '-');
             System.IO.Directory.CreateDirectory($"output\\{folderName}");
 
-            int uniqueItemsCount = uniqueItems.Count;
+            int uniqueItemsCount = _uniqueItems.Count;
             int outputFilesQuantity;
             if (numbersPerFile > uniqueItemsCount)
             {
@@ -64,7 +64,7 @@ namespace RosimKadastr
                     {
                         for (int j = startPosition; j < endPosition; j++)
                         {
-                            sw.WriteLine(uniqueItems[j] + ',');
+                            sw.WriteLine(_uniqueItems[j] + ',');
                         }
                     }
 
@@ -83,7 +83,7 @@ namespace RosimKadastr
             _numbersPerFile = num;
         }
 
-        public int GetNumbersPerFiles()
+        public int GetNumbersPerFile()
         {
             return _numbersPerFile;
         }

@@ -13,8 +13,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.IO;
-using OfficeOpenXml;
-using System.Text.RegularExpressions;
 
 namespace RosimKadastr
 {
@@ -23,11 +21,33 @@ namespace RosimKadastr
     /// </summary>
     public partial class MainWindow : Window
     {
-        private PackOfNums? _instance = null;
+        private InputFieldData? _instance = null;
         public MainWindow()
         {
             InitializeComponent();
 
+        }
+
+        private void OpenFileBTN_Click(object sender, RoutedEventArgs e)
+        {
+            if (!String.IsNullOrEmpty(ColumnLetter.Text))
+            {
+                Columns column;
+                Enum.TryParse(ColumnLetter.Text.ToUpper(), out column);
+
+                Microsoft.Win32.OpenFileDialog openFileDlg = new Microsoft.Win32.OpenFileDialog();
+                Nullable<bool> dialogResult = openFileDlg.ShowDialog();
+
+                if (dialogResult == true)
+                {
+                    var excelDoc = new ExcelDoc(openFileDlg.FileName, column);
+                    InputField.Text = excelDoc.GetExcelColumn();
+                }
+            }
+            else
+            {
+                // обработать попытку открыть файл с пустым значением колонки
+            }
         }
 
         private void ProcessBTN_Click(object sender, RoutedEventArgs e)
@@ -35,7 +55,7 @@ namespace RosimKadastr
             if (InputField.Text != null)
             {
                 if (_instance == null)
-                    _instance = new PackOfNums(InputField.Text);
+                    _instance = new InputFieldData(InputField.Text);
                 else
                     _instance.setUserInput(InputField.Text);
 
@@ -60,49 +80,7 @@ namespace RosimKadastr
             else
                 _instance.SetNumbersPerFile(100);
 
-            _instance.CreateCSV(_instance.GetNumbersPerFiles());
-        }
-
-        private void OpenFileBTN_Click(object sender, RoutedEventArgs e)
-        {
-            if (!String.IsNullOrEmpty(ColumnLetter.Text))
-            {
-                Columns col;
-                Enum.TryParse(ColumnLetter.Text.ToUpper(), out col);
-
-                Microsoft.Win32.OpenFileDialog openFileDlg = new Microsoft.Win32.OpenFileDialog();
-                Nullable<bool> dialogResult = openFileDlg.ShowDialog();
-
-                if (dialogResult == true)
-                {
-                    string path = openFileDlg.FileName;
-
-                    FileInfo fileInfo = new FileInfo(openFileDlg.FileName);
-                    ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-                    using (ExcelPackage excelPackage = new ExcelPackage(fileInfo))
-                    {
-                        ExcelWorksheet sheet = excelPackage.Workbook.Worksheets[0];
-
-                        var numberObjectsFromExcel = sheet.Columns[(int)col].Range.ToList();
-                        List<string> theNumbers = new List<string>();
-                        var textBoxOutput = new StringBuilder();
-                        foreach (var item in numberObjectsFromExcel)
-                        {
-                            string number = item.Value?.ToString();
-                            if (number != null && Regex.IsMatch(number, @"\d+:\d+:\d+:\d+"))
-                                {
-                                    theNumbers.Add(number);
-                                    //textBoxOutput.AppendLine(item.Value?.ToString());
-                                }
-                        }
-                        InputField.Text = String.Join("\r\n", theNumbers);
-                    }
-                }
-            }
-            else
-            {
-                // обработать попытку открыть файл с пустым значением колонки
-            }
+            _instance.CreateCSV(_instance.GetNumbersPerFile());
         }
     }
 }
