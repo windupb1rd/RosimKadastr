@@ -29,7 +29,7 @@ namespace RosimKadastr
         {
             _uniqueItems = _userInput.ToHashSet<string>().ToList<string>();
 
-            return $"Всего кадастровых номеров в списке: {_userInput.Count}.\r\nИз них уникальных: {_uniqueItems.Count}";
+            return $"Всего кадастровых номеров в списке: {_userInput.Count}\r\nИз них уникальных: {_uniqueItems.Count}";
         }
 
         public void CreateCSV(int numbersPerFile)

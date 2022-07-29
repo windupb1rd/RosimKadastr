@@ -19,8 +19,8 @@ namespace RosimKadastr
     {
         private readonly string _pathToFile;
         private readonly Columns _column;
-        private Dictionary<string, string> theNumbers = new Dictionary<string, string>();
-        private Dictionary<string, string> doubles = new Dictionary<string, string>();
+        private Dictionary<string, List<string>> theNumbers = new Dictionary<string, List<string>>();
+
 
         public ExcelDocColumn(string path, Columns col)
         {
@@ -36,29 +36,50 @@ namespace RosimKadastr
                 ExcelWorksheet sheet = excelPackage.Workbook.Worksheets[0];
 
                 var numberObjectsFromExcel = sheet.Columns[(int)_column].Range.ToList();
-                
+                var allEntries = new List<string>();
+
                 foreach (var item in numberObjectsFromExcel)
                 {
                     string number = item.Value?.ToString();
                     string address = item.Address?.ToString();
+                    
                     if (number != null && Regex.IsMatch(number, @"\d+:\d+:\d+:\d+"))
                     {
-                        theNumbers[address] = number;
+                        allEntries.Add(number);
+                        if (!theNumbers.ContainsKey(number))
+                            theNumbers[number] = new List<string>();
+                        
+                        theNumbers[number].Add(address); 
                     }
                 }
-                GetDuplicatesAdresses();
-                return String.Join("\r\n", theNumbers.Values);
+                return String.Join("\r\n", allEntries);
             }
-        }
+        }      
 
-        public void GetDuplicatesAdresses()
+        public Dictionary<string, List<string>> GetDuplicates() => theNumbers.Where(x => x.Value.Count > 1).ToDictionary(x => x.Key, y => y.Value);
+
+        public void DeleteDuplicates()
         {
-            //var distinctNumbers = theNumbers.Values.Distinct().ToList();
-            var doubles = theNumbers.GroupBy(x => x.Value.Count() > 1);
-        }
-        public void GetNewExcelFileWithoutDuplicates()
-        {
+            var itemsToDelete = new List<string>();
+            var dups = GetDuplicates();
+            foreach (var kvp in dups)
+            {
+                kvp.Value.RemoveAt(0);
+                foreach (var item in kvp.Value)
+                {
+                    itemsToDelete.Add(item.Substring(1));
+
+                }
+
+            }
+
+
+            //public void GetNewExcelFileWithoutDuplicates()
+            //{
+            //    if (!theNumbers.ContainsKey(number))
+            //        theNumbers[number] = new List<string>();
+
+            //    theNumbers[number].Add(address);
 
         }
-    }
 }
