@@ -89,6 +89,12 @@ namespace RosimKadastr
             return _numbersPerFile;
         }
 
+
+
+        /// <summary>
+        /// Методы для дебага.
+        /// </summary>
+        /// <returns></returns>
         public Dictionary<string, List<int>> FindDuplicates()
         {
             var _duplicates = new Dictionary<string, List<int>>();

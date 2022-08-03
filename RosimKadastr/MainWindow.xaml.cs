@@ -22,7 +22,7 @@ namespace RosimKadastr
     public partial class MainWindow : Window
     {
         private InputFieldData? _inputFieldInstance = null;
-        private ExcelDocColumn _excelDocInstance;
+        private ExcelDocColumn? _excelDocInstance = null;
         public MainWindow()
         {
             InitializeComponent();
@@ -65,25 +65,32 @@ namespace RosimKadastr
             }
         }
 
-        private void ShowDuplicatesBTN_Click(object sender, RoutedEventArgs e)
+        private void DonloadXlsxBTN_Click(object sender, RoutedEventArgs e)
         {
-            _inputFieldInstance.GenerateTxtWithDuplicates();
-            System.Diagnostics.Process.Start("notepad", "duplicates.txt");
-            _excelDocInstance.CopyUniqueRows();
+            //_inputFieldInstance.GenerateTxtWithDuplicates();
+            //System.Diagnostics.Process.Start("notepad", "duplicates.txt");
+            if (_excelDocInstance != null)
+            {
+                _excelDocInstance.CreateExcelFileWithoutDuplicates();
+                System.Diagnostics.Process.Start("explorer", $"output");
+            }
         }
 
         private void DownloadBTN_Click(object sender, RoutedEventArgs e)
         {
-            int numberOfFiles;
-            if (!String.IsNullOrEmpty(NumberOfFiles.Text))
+            if (_inputFieldInstance != null)
             {
-                if (int.TryParse(NumberOfFiles.Text, out numberOfFiles))
-                    _inputFieldInstance.SetNumbersPerFile(numberOfFiles);
-            }
-            else
-                _inputFieldInstance.SetNumbersPerFile(100);
+                int numberOfFiles;
+                if (!String.IsNullOrEmpty(NumberOfFiles.Text))
+                {
+                    if (int.TryParse(NumberOfFiles.Text, out numberOfFiles))
+                        _inputFieldInstance.SetNumbersPerFile(numberOfFiles);
+                }
+                else
+                    _inputFieldInstance.SetNumbersPerFile(100);
 
-            _inputFieldInstance.CreateCSV(_inputFieldInstance.GetNumbersPerFile());
+                _inputFieldInstance.CreateCSV(_inputFieldInstance.GetNumbersPerFile());
+            }
         }
     }
 }

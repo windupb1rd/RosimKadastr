@@ -54,20 +54,19 @@ namespace RosimKadastr
 
         public Dictionary<string, List<int>> GetDuplicates() => _theNumbers.Where(x => x.Value.Count > 1).ToDictionary(x => x.Key, y => y.Value);
 
-        public void CopyUniqueRows()
+        public void CreateExcelFileWithoutDuplicates()
         {
+            if (!System.IO.Directory.Exists("output"))
+                System.IO.Directory.CreateDirectory("output");
+
             var itemsToDelete = new List<int>();
             var dups = GetDuplicates();
 
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             ExcelWorkbook workbook = _excelPackage.Workbook;
             ExcelWorksheet sourceSheet = workbook.Worksheets[0];
-            workbook.Worksheets.Add("NEW");
-            ExcelWorksheet newSheet = workbook.Worksheets["NEW"];
-
-
-
-            
+            //workbook.Worksheets.Add("NEW");
+            //ExcelWorksheet newSheet = workbook.Worksheets["NEW"];
 
             //int numberOfColumns = sourceSheet.Dimension.Columns;
 
@@ -121,13 +120,8 @@ namespace RosimKadastr
                 j++;
             }
 
-
-
-
-
             _excelPackage.SaveAs(new FileInfo(@"output\new.xlsx"));
             _excelPackage.Dispose();
-            
 
             //public void GetNewExcelFileWithoutDuplicates()
             //{
@@ -137,8 +131,5 @@ namespace RosimKadastr
             //    _theNumbers[number].Add(address);
 
         }
-
-
-
     }
 }
