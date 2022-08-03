@@ -28,6 +28,7 @@ namespace RosimKadastr
         public string ShowInfo()
         {
             _uniqueItems = _userInput.ToHashSet<string>().ToList<string>();
+            
 
             return $"Всего кадастровых номеров в списке: {_userInput.Count}\r\nИз них уникальных: {_uniqueItems.Count}";
         }

@@ -21,7 +21,8 @@ namespace RosimKadastr
     /// </summary>
     public partial class MainWindow : Window
     {
-        private InputFieldData? _instance = null;
+        private InputFieldData? _inputFieldInstance = null;
+        private ExcelDocColumn _excelDocInstance;
         public MainWindow()
         {
             InitializeComponent();
@@ -40,9 +41,10 @@ namespace RosimKadastr
 
                 if (dialogResult == true)
                 {
-                    var excelDoc = new ExcelDocColumn(openFileDlg.FileName, column);
-                    InputField.Text = excelDoc.GetExcelColumnData();
+                    _excelDocInstance = new ExcelDocColumn(openFileDlg.FileName, column);
+                    InputField.Text = _excelDocInstance.GetExcelColumnData();
                 }
+                
             }
             else
             {
@@ -54,19 +56,20 @@ namespace RosimKadastr
         {
             if (InputField.Text != null)
             {
-                if (_instance == null)
-                    _instance = new InputFieldData(InputField.Text);
+                if (_inputFieldInstance == null)
+                    _inputFieldInstance = new InputFieldData(InputField.Text);
                 else
-                    _instance.setUserInput(InputField.Text);
+                    _inputFieldInstance.setUserInput(InputField.Text);
 
-                Info.Text = _instance.ShowInfo();
+                Info.Text = _inputFieldInstance.ShowInfo();
             }
         }
 
         private void ShowDuplicatesBTN_Click(object sender, RoutedEventArgs e)
         {
-            _instance.GenerateTxtWithDuplicates();
+            _inputFieldInstance.GenerateTxtWithDuplicates();
             System.Diagnostics.Process.Start("notepad", "duplicates.txt");
+            _excelDocInstance.CopyUniqueRows();
         }
 
         private void DownloadBTN_Click(object sender, RoutedEventArgs e)
@@ -75,12 +78,12 @@ namespace RosimKadastr
             if (!String.IsNullOrEmpty(NumberOfFiles.Text))
             {
                 if (int.TryParse(NumberOfFiles.Text, out numberOfFiles))
-                    _instance.SetNumbersPerFile(numberOfFiles);
+                    _inputFieldInstance.SetNumbersPerFile(numberOfFiles);
             }
             else
-                _instance.SetNumbersPerFile(100);
+                _inputFieldInstance.SetNumbersPerFile(100);
 
-            _instance.CreateCSV(_instance.GetNumbersPerFile());
+            _inputFieldInstance.CreateCSV(_inputFieldInstance.GetNumbersPerFile());
         }
     }
 }
