@@ -21,29 +21,76 @@ namespace RosimKadastr
     /// </summary>
     public partial class MainWindow : Window
     {
-        private PackOfNums _instance;
+        private InputFieldData? _inputFieldInstance = null;
+        private ExcelDocColumn? _excelDocInstance = null;
         public MainWindow()
         {
             InitializeComponent();
 
         }
 
-        private void ProcessBTN_Click(object sender, RoutedEventArgs e)
+        private void OpenFileBTN_Click(object sender, RoutedEventArgs e)
         {
-            
-            if (InputField.Text != null)
+            if (!String.IsNullOrEmpty(ColumnLetter.Text))
             {
-                _instance = new PackOfNums(InputField.Text);
-                //if (NumberOfFiles.Text != null)
-                //    file.SetNumbersPerFile(int.Parse(NumberOfFiles.Text));
-                Info.Text = _instance.ShowInfo();
+                Columns column;
+                Enum.TryParse(ColumnLetter.Text.ToUpper(), out column);
+
+                Microsoft.Win32.OpenFileDialog openFileDlg = new Microsoft.Win32.OpenFileDialog();
+                Nullable<bool> dialogResult = openFileDlg.ShowDialog();
+
+                if (dialogResult == true)
+                {
+                    _excelDocInstance = new ExcelDocColumn(openFileDlg.FileName, column);
+                    InputField.Text = _excelDocInstance.GetExcelColumnData();
+                }
+                
+            }
+            else
+            {
+                // обработать попытку открыть файл с пустым значением колонки
             }
         }
 
-        private void ShowDuplicatesBTN_Click(object sender, RoutedEventArgs e)
+        private void ProcessBTN_Click(object sender, RoutedEventArgs e)
         {
-            _instance.GenerateTxtWithDuplicates();
-            System.Diagnostics.Process.Start("notepad", "duplicates.txt");
+            if (InputField.Text != null)
+            {
+                if (_inputFieldInstance == null)
+                    _inputFieldInstance = new InputFieldData(InputField.Text);
+                else
+                    _inputFieldInstance.setUserInput(InputField.Text);
+
+                Info.Text = _inputFieldInstance.ShowInfo();
+            }
+        }
+
+        private void DonloadXlsxBTN_Click(object sender, RoutedEventArgs e)
+        {
+            //_inputFieldInstance.GenerateTxtWithDuplicates();
+            //System.Diagnostics.Process.Start("notepad", "duplicates.txt");
+            if (_excelDocInstance != null)
+            {
+                _excelDocInstance.CreateExcelFileWithoutDuplicates();
+                System.Diagnostics.Process.Start("explorer", $"output");
+            }
+        }
+
+        private void DownloadBTN_Click(object sender, RoutedEventArgs e)
+        {
+            if (_inputFieldInstance != null)
+            {
+                int numberOfFiles;
+                if (!String.IsNullOrEmpty(NumberOfFiles.Text))
+                {
+                    if (int.TryParse(NumberOfFiles.Text, out numberOfFiles))
+                        _inputFieldInstance.SetNumbersPerFile(numberOfFiles);
+                }
+                else
+                    _inputFieldInstance.SetNumbersPerFile(100);
+
+                _inputFieldInstance.CreateCSV(_inputFieldInstance.GetNumbersPerFile());
+            }
         }
     }
 }
