@@ -65,44 +65,7 @@ namespace RosimKadastr
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             ExcelWorkbook workbook = _excelPackage.Workbook;
             ExcelWorksheet sourceSheet = workbook.Worksheets[0];
-            //workbook.Worksheets.Add("NEW");
-            //ExcelWorksheet newSheet = workbook.Worksheets["NEW"];
-
-            //int numberOfColumns = sourceSheet.Dimension.Columns;
-
-            //List<ExcelRange> rowsData = new List<ExcelRange>();
-            //int i = 1;
-            //foreach (var item in _theNumbers)
-            //{
-            //    //sheet.Row(int.Parse(item.Value[0
-            //    //rowsData.Add(sheet.Cells[3, 1, numberOfColumns, 1]);
-
-            //    sourceSheet.Cells[item.Value[0], 1, item.Value[0], numberOfColumns].Copy(newSheet.Cells[i, 1, i, numberOfColumns]);
-            //    //sourceSheet.Cells[item.Value[0], 1, item.Value[0], numberOfColumns].CopyStyles(newSheet.Cells[i, 1, i, numberOfColumns]);
-            //    i++;
-            //}
-
-            //foreach (var item in _theNumbers)
-            //{
-
-            //}
-
-            //foreach (var kvp in dups)
-            //{
-            //    kvp.Value.RemoveAt(0);
-            //    foreach (var item in kvp.Value)
-            //    {
-            //        itemsToDelete.Add(item.Substring(1));
-
-            //    }
-            //}
-            //itemsToDelete.Sort();
-
-            //for (int i = 0; i < itemsToDelete.Count; i++)
-            //{
-            //    sheet.DeleteRow(int.Parse(itemsToDelete[i]) - i);
-            //}
-
+            
             foreach (var kvp in dups)
             {
                 kvp.Value.RemoveAt(0);
@@ -122,14 +85,6 @@ namespace RosimKadastr
 
             _excelPackage.SaveAs(new FileInfo(@"output\new.xlsx"));
             _excelPackage.Dispose();
-
-            //public void GetNewExcelFileWithoutDuplicates()
-            //{
-            //    if (!_theNumbers.ContainsKey(number))
-            //        _theNumbers[number] = new List<string>();
-
-            //    _theNumbers[number].Add(address);
-
         }
     }
 }

@@ -71,8 +71,6 @@ namespace RosimKadastr
 
         private void DownloadXlsxBTN_Click(object sender, RoutedEventArgs e)
         {
-            //_inputFieldInstance.GenerateTxtWithDuplicates();
-            //System.Diagnostics.Process.Start("notepad", "duplicates.txt");
             if (_excelDocInstance != null & DownloadBTN.IsEnabled)
             {
                 _excelDocInstance.CreateExcelFileWithoutDuplicates();

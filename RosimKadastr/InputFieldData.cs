@@ -88,47 +88,5 @@ namespace RosimKadastr
         {
             return _numbersPerFile;
         }
-
-
-
-        /// <summary>
-        /// Методы для дебага.
-        /// </summary>
-        /// <returns></returns>
-        public Dictionary<string, List<int>> FindDuplicates()
-        {
-            var _duplicates = new Dictionary<string, List<int>>();
-            int count = 0;
-            foreach (string line in _userInput)
-            {
-                count++;
-                if (!_duplicates.ContainsKey(line))
-                    _duplicates.Add(line, new List<int>() { count });
-                else
-                    _duplicates[line].Add(count);
-            }
-
-            return _duplicates
-                .OrderByDescending(x => x.Value.Count)
-                .Where(x => x.Value.Count > 1)
-                .ToDictionary(x => x.Key, y => y.Value);
-        }
-
-        public void GenerateTxtWithDuplicates()
-        {
-            var output = new StreamWriter("duplicates.txt");
-            var valueString = new StringBuilder();
-            foreach (KeyValuePair<string, List<int>> kvp in FindDuplicates())
-            {
-                foreach (int x in kvp.Value)
-                {
-                    valueString.Append(x + ", ");
-                }
-                output.WriteLine($"{kvp.Key}   |   встречается {kvp.Value.Count} раз в строках {valueString.ToString()}");
-                valueString.Clear();
-            }
-            output.Close();
-
-        }
     }
 }
