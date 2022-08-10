@@ -14,7 +14,7 @@
         <Button x:Name="ProcessBTN" Content="Обработать" HorizontalAlignment="Left" Height="31" Margin="442,138,0,0" VerticalAlignment="Top" Width="114" Click="ProcessBTN_Click"/>
         <Button x:Name="DownloadBTN" Content="Скачать файлы .csv" HorizontalAlignment="Left" Margin="442,324,0,0" VerticalAlignment="Top" Height="31" Width="114" Click="DownloadBTN_Click"/>
         <TextBlock x:Name="Info" HorizontalAlignment="Left" Margin="410,174,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="178" Height="58"/>
-        <Button x:Name="DonloadXlsxBTN" Content="Файл .xlsx без дубликатов" HorizontalAlignment="Left" Height="61" Margin="428,390,0,0" VerticalAlignment="Top" Width="160" Click="DonloadXlsxBTN_Click">
+        <Button x:Name="DonloadXlsxBTN" Content="Файл .xlsx без дубликатов" HorizontalAlignment="Left" Height="61" Margin="428,390,0,0" VerticalAlignment="Top" Width="160" Click="DownloadXlsxBTN_Click">
 
         </Button>
         <Label Content="Создать CSV-файлы с заданным количеством номеров в каждом" HorizontalAlignment="Left" Height="40" Margin="57,10,0,0" VerticalAlignment="Top" Width="499" FontSize="16"/>

@@ -48,13 +48,13 @@ namespace RosimKadastr
             }
             else
             {
-                // обработать попытку открыть файл с пустым значением колонки
+                MessageBox.Show("Необходимо заполнить столбец, в котором находятся кадастровые номера.");
             }
         }
 
         private void ProcessBTN_Click(object sender, RoutedEventArgs e)
         {
-            if (InputField.Text != null)
+            if (!String.IsNullOrEmpty(InputField.Text))
             {
                 if (_inputFieldInstance == null)
                     _inputFieldInstance = new InputFieldData(InputField.Text);
@@ -63,16 +63,23 @@ namespace RosimKadastr
 
                 Info.Text = _inputFieldInstance.ShowInfo();
             }
+            else
+            {
+                MessageBox.Show("Поле ввода не содержит записей.");
+            }
         }
 
-        private void DonloadXlsxBTN_Click(object sender, RoutedEventArgs e)
+        private void DownloadXlsxBTN_Click(object sender, RoutedEventArgs e)
         {
             //_inputFieldInstance.GenerateTxtWithDuplicates();
             //System.Diagnostics.Process.Start("notepad", "duplicates.txt");
-            if (_excelDocInstance != null)
+            if (_excelDocInstance != null & DownloadBTN.IsEnabled)
             {
                 _excelDocInstance.CreateExcelFileWithoutDuplicates();
                 System.Diagnostics.Process.Start("explorer", $"output");
+
+                DownloadBTN.IsEnabled = false;
+                
             }
         }
 
@@ -90,6 +97,10 @@ namespace RosimKadastr
                     _inputFieldInstance.SetNumbersPerFile(100);
 
                 _inputFieldInstance.CreateCSV(_inputFieldInstance.GetNumbersPerFile());
+            }
+            else
+            {
+                MessageBox.Show("Сначала нажмите кнопку \"Обработать\".");
             }
         }
     }
